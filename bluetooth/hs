@@ -1,0 +1,53 @@
+#!/bin/bash
+
+headset_profile="headset_head_unit"
+a2dp_profile="a2dp_sink"
+hw_addr="HEADPHONE_HW_ADDRESS_HERE"
+card=bluez_card.$hw_addr
+sink=bluez_sink.$hw_addr
+mic=bluez_source.$hw_addr
+snd_volume="65536"
+mic_volume="65535"
+volume="65535"
+
+if [ "$1" = "mute" ]; then
+	pacmd set-source-mute $mic 1
+	exit 0
+fi
+if [ "$1" = "unmute" ]; then
+        pacmd set-source-mute $mic 0
+        exit 0
+fi
+if [ "$1" = "vol" ]; then
+	set_vol="$2"
+	if [ -z "$set_vol" ]; then
+		set_vol=50
+	fi
+	if [ "$set_vol" -gt "100" ]; then
+		set_vol=100
+	fi
+	volume=$(($mic_volume*$set_vol/100))
+	pacmd set-source-volume $mic $volume
+	exit 0
+fi
+
+# Actual setup of audio output
+
+profile=$a2dp_profile
+
+if [ "$1" = "on" ]; then
+	profile=$headset_profile
+fi
+
+pacmd set-card-profile $card $profile
+
+if [ -z "$volume" ]; then
+	pacmd set-sink-volume $sink $volume
+fi
+
+if [ "$profile" = "$headset_profile" ]; then
+	pacmd set-default-source $mic
+	pacmd set-default-sink $sink
+	pacmd set-source-volume $mic $volume
+	pacmd set-source-mute $mic 1
+fi
