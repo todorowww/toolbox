@@ -30,3 +30,14 @@ Bash script. **Run as regular user, NOT root.** Used to quickly switch between A
 - Run `hs on` to switch to headset profile. Automatically mutes the microphone upon switch.
 - Run `hs mute` or `hs unmute` to mute/unmute your headset microphone
 - Run `hs vol x` to set  microphone volume for your headset. X is in percent, and default is 50%.
+
+#### hs.jar
+
+Java program to perform the same action as `hs` BASH script, only better and more reliably. Sources for the compiled version are in `bluetooth/headsetchanger`directory. I made this as an exercise while learning Java.
+
+- Run with no parameters to alternate between A2DP and Headset profiles
+- Run with `off` parameter to force A2DP profile
+- Run with `on` parameter to force Headset profile
+- Run with `mute` or `unmute` parameter to mute/unmute your headset microphone
+
+Unlike the `hs` BASH script, `hs.jar` sets headphone volume to max, and microphone volume to 50%, by default. For now, it's impossible to change the volume through this program. I plan to add it in the future.
