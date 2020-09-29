@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Main-Class: rs.todorov.headsetchanger.Main
+Name: todorov/headsetchanger
+Specification-Title: "Sony WH-1000XM2 Bluetooth profile changer"
+Specification-Version: "1.0"
+Specification-Vendor: "Slobodan Todorov"
