@@ -13,8 +13,6 @@ public class BluetoothDevice {
     private String cardName;
     private String sinkId;
     private String micId;
-    private int baseVolume;
-    private int baseVolumePercent;
 
     private String listSinks;
     private String listCards;
@@ -22,7 +20,6 @@ public class BluetoothDevice {
     public void setup() {
         this.getSinksAndCards();
         this.findWHDevice();
-        this.fetchSinkInfo();
         this.fetchCardInfo();
     }
 
@@ -45,6 +42,11 @@ public class BluetoothDevice {
                 match =  regex.matcher(sink);
                 if (match.find()) {
                     this.cardId = match.group(1);
+                }
+                regex = Pattern.compile("sinks:\\s+(.+)\\/");
+                match =  regex.matcher(sink);
+                if (match.find()) {
+                    this.sinkId = match.group(1);
                 }
             }
         }
@@ -78,32 +80,6 @@ public class BluetoothDevice {
             this.description = match.group(1).trim();
         }
 
-    }
-
-    private void fetchSinkInfo() {
-        int start = this.listSinks.indexOf("index: " + this.getDefaultSink());
-        int end = this.listSinks.indexOf("index:", start + 1);
-        String sinkData;
-        if (end > -1) {
-            sinkData = this.listSinks.substring(start, end);
-        } else {
-            sinkData = this.listSinks.substring(start);
-        }
-
-        Pattern regex = Pattern.compile("device.string = \"(.*)\"");
-        Matcher match =  regex.matcher(sinkData);
-        if (match.find()) {
-            this.device = match.group(1).trim();
-            this.sinkId = "bluez_sink." + device.replaceAll(":", "_");
-            this.micId = "bluez_source." + device.replaceAll(":", "_");
-        }
-
-        regex = Pattern.compile("base volume: (\\d+) / (\\d+)% /.*");
-        match =  regex.matcher(sinkData);
-        if (match.find()) {
-            this.baseVolume = Integer.parseInt(match.group(1).trim());
-            this.baseVolumePercent = Integer.parseInt(match.group(2).trim());
-        }
     }
 
     public String getDefaultSink() {
@@ -182,13 +158,5 @@ public class BluetoothDevice {
 
     public void setMicId(String micId) {
         this.micId = micId;
-    }
-
-    public int getBaseVolume() {
-        return this.baseVolume;
-    }
-
-    public int getBaseVolumePercent() {
-        return this.baseVolumePercent;
     }
 }

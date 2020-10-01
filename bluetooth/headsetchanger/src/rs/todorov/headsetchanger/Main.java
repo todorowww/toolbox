@@ -6,6 +6,15 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
+        if (CmdRunner.runCommand("id -u").trim().equals("0")) {
+            System.out.println("This script should be run as a regular user, not root. Exiting.");
+            return;
+        }
+        if (!System.getProperty("os.name").trim().equals("Linux")) {
+            System.out.println("This script is intended only for Linux OS. Exiting.");
+            return;
+        }
+
         BluetoothDevice bt = new BluetoothDevice();
         String switchTo = "";
 
