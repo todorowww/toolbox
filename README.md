@@ -10,8 +10,7 @@ This repo will contain various scripts I use on a daily basis, that make my life
 If you own a pair of SONY WH-1000XM2 (maybe goes for XM3 as well), and use them on Linux, you're most likely aware of the pain and suffering they tend to cause. No matter what I tried, they just don't seem to want to cooperate. Scripts in this folder are used for the sole purpose of making my life easier when it comes to connectinng my headphones to my computer.
 
 ##### Prerequisites
-Installed bluetoothctl, expect, successfully paired your headphones with your computer, set them to trusted device.
-You need to get your headphones HW address, in order to use these scripts. Naturally, you need to edit them as well, and input your numbers in appropriate places. 
+Installed `bluetoothctl` and `expect`, successfully paired your headphones with your computer, set them to trusted device. You need to get your headphones HW address, in order to use these scripts. Naturally, you need to edit them as well, and input your numbers in appropriate places. 
 
 To obtain headphones HW address, run `bluetoothctl` as root, and run `devices` command. This gives you the list of paired BT devices. You're looking for something like:
 ```
@@ -41,3 +40,10 @@ Java program to perform the same action as `hs` BASH script, only better and mor
 - Run with `mute` or `unmute` parameter to mute/unmute your headset microphone
 
 Unlike the `hs` BASH script, `hs.jar` sets headphone volume to max, and microphone volume to 50%, by default. For now, it's impossible to change the volume through this program. I plan to add it in the future.
+
+If you want to have `hs.jar` available anywhere, consider writing a  BASH script to run the jar. So, if you place `hs.jar` in `/opt/toolbox` your BASH script would look something like:
+```
+#/bin/bash
+java -jar /opt/toolbox/hs.jar "$@"
+```
+And place it someplace that is in PATH, for example `/usr/local/bin`. And don't forget to `chmod a+x` it.
